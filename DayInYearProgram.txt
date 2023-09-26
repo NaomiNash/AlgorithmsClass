@@ -1,0 +1,123 @@
+// -----------------------------------------------------------------------
+//	   DayinYear.cpp - verifies that a date is valid in the Gregorian
+//		  calender and computes how many days it is into the year.
+//		     Naomi Nash - Saint Leo University - 1 March 2021
+// -----------------------------------------------------------------------
+
+using namespace std;
+#include <iostream>
+#include <iomanip>
+
+// -----------------------------------------------------------------------
+// bool isValidYear(int myYear) -- return true only if myYear is a
+//		valid year number
+// -----------------------------------------------------------------------
+
+bool isValidYear(int myYear) {
+	return(myYear > 0);
+}
+
+// -----------------------------------------------------------------------
+// bool isValidMonth(int myMonth) -- return true only if myMonth 
+//		specifies a valid month number (1-12)
+// -----------------------------------------------------------------------
+
+bool isValidMonth(int myMonth) {
+	return((myMonth >= 1) && (myMonth <= 12));
+}
+
+// -----------------------------------------------------------------------
+// bool isLeapYear(int myYear) -- return true if and only if the year 
+//		myYear is a leap year in the Gregorian calender
+// -----------------------------------------------------------------------
+
+bool isLeapYear(int myYear) {
+	bool retVal = false; 
+	if ((myYear % 4) == 0) {
+		retVal = true;
+		if (((myYear % 100) == 0) && ((myYear % 400) != 0)) {
+			retVal = false;
+		}
+	}
+	return retVal;
+}
+
+// -----------------------------------------------------------------------
+// int daysInMonth(int myYear, int myMonth) -- returns the days in the
+//		month specified by the given myYear and myMonth
+// -----------------------------------------------------------------------
+
+int daysInMonth(int myYear, int myMonth) {
+	int retVal = 31;
+	if ((myMonth == 9) || (myMonth == 4) || (myMonth == 6)
+		|| (myMonth == 11)) {
+			retVal = 30;
+	} else {
+		if (myMonth == 2) {
+			if (isLeapYear(myYear)) {
+				retVal = 29;
+			} else {
+				retVal = 28;
+			}
+		}
+	}
+	return retVal;
+}
+
+// -----------------------------------------------------------------------
+// bool isValidDate(int myYear, int myMonth, int myDay) -- return true
+//		only if the parameters specify a valid date in the Gregorian
+//		calender. 
+// -----------------------------------------------------------------------
+
+bool isValidDate(int myYear, int myMonth, int myDay) {
+	return ((isValidYear(myYear)) && isValidMonth(myMonth) && (myDay > 0) 
+		&& (myDay <= daysInMonth(myYear, myMonth)));
+}
+
+// -----------------------------------------------------------------------
+// int daysIntoYear(int myYear, int myMonth, int myDay) -- return the 
+//		number of days into the year the day is specified by myYear,
+//		myMonth, and myDay.
+// -----------------------------------------------------------------------
+
+int daysIntoYear(int myYear, int myMonth, int myDay) {
+	int retVal = myDay;
+	int pastMonth;
+	for (pastMonth = 1; pastMonth < myMonth; pastMonth++) {
+		retVal = retVal + daysInMonth(myYear, pastMonth);
+	}
+	return retVal;
+}
+
+// -----------------------------------------------------------------------
+// Main Program
+// -----------------------------------------------------------------------
+
+int main() {
+	int tDay, tMonth, tYear;
+	int currentDayNumber;
+	
+	// Part 1. Get User to enter date
+
+	cout << "Please enter the year: ";
+	cin >> tYear;
+	cout << "Please enter the month: ";
+	cin >> tMonth;
+	cout << "Please enter the day: ";
+	cin >> tDay;
+
+	// Part 2. Report
+
+	if (isValidDate(tYear, tMonth, tDay)) {
+		currentDayNumber = daysIntoYear(tYear, tMonth, tDay);
+		cout << tYear << "/" << tMonth << "/" << tDay << " is "
+			 << currentDayNumber << " days into the year." << endl;
+	} else {
+		cout << tYear << "/" << tMonth << "/" << tDay
+			<< " is not a valid date." << endl;
+	}
+
+	return 0;
+}
+// -----------------------------------------------------------------------

@@ -1,0 +1,10 @@
+// Naomi Nash - Saint Leo Univesity
+// This is the HelloWorld_wrong file
+// It is missing a closing paranthesis
+
+#include <iostream>
+
+int main( // Missing closing paranthesis
+{
+    std::cout << "Hello World!\n"; // Supposed to print Hello World
+}
